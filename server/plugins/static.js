@@ -6,10 +6,15 @@ import fp from 'fastify-plugin';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-export default fp(async (fastify) => {
-  fastify.register(fastifyStatic, {
-    root: path.join(__dirname, '../../dist/assets'),
-    prefix: '/assets/',
-    decorateReply: false,
-  });
-});
+export default fp(
+  async (fastify) => {
+    await fastify.register(fastifyStatic, {
+      root: path.join(__dirname, '../../dist/assets'),
+      prefix: '/assets/',
+      decorateReply: false,
+    });
+  },
+  {
+    name: 'static',
+  },
+);

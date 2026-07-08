@@ -9,18 +9,23 @@ import pug from 'pug';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-export default fp(async (fastify) => {
-  const manifestPath = path.join(__dirname, '../../dist/.vite/manifest.json');
-  const manifest = JSON.parse(await readFile(manifestPath, 'utf8'));
+export default fp(
+  async (fastify) => {
+    const manifestPath = path.join(__dirname, '../../dist/.vite/manifest.json');
+    const manifest = JSON.parse(await readFile(manifestPath, 'utf8'));
 
-  await fastify.register(view, {
-    engine: { pug },
-    root: path.join(__dirname, '../views'),
-    includeViewExtension: true,
-    defaultContext: {
-      assets: (filename) => manifest[filename]?.file ?? '',
-      route: (name) => fastify.reverse(name),
-      t: (key, options) => i18next.t(key, options),
-    },
-  });
-});
+    await fastify.register(view, {
+      engine: { pug },
+      root: path.join(__dirname, '../views'),
+      includeViewExtension: true,
+      defaultContext: {
+        assets: (filename) => manifest[filename]?.file ?? '',
+        route: (name) => fastify.reverse(name),
+        t: (key, options) => i18next.t(key, options),
+      },
+    });
+  },
+  {
+    name: 'view',
+  },
+);
