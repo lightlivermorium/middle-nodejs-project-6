@@ -1,16 +1,27 @@
-import { onTestFinished } from 'vitest';
 import { createApp } from '../server/app.js';
 
-async function build() {
+async function runMigrations(app) {
+  await app.objection.knex.migrate.latest();
+}
+
+async function runSeeders(app) {
+  await app.objection.knex.seed.run();
+}
+
+async function build({ migrate = true, seed = false } = {}) {
   const app = await createApp();
 
   await app.ready();
 
-  onTestFinished(async () => {
-    await app.close();
-  });
+  if (migrate) {
+    await runMigrations(app);
+  }
+
+  if (seed) {
+    await runSeeders(app);
+  }
 
   return app;
 }
 
-export { build };
+export { build, runMigrations, runSeeders };

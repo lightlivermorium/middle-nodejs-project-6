@@ -36,6 +36,12 @@ export async function createApp() {
     },
   });
 
+  app.addHook('preHandler', async (request, reply) => {
+    reply.locals = {
+      isAuthenticated: () => request.isAuthenticated(),
+    };
+  });
+
   await app.register(autoload, {
     dir: path.join(__dirname, 'plugins'),
   });

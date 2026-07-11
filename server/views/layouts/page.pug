@@ -1,10 +1,45 @@
+include ../mixins/flash
+include ../mixins/nav
+include ../mixins/forms
+
 html
   head
     meta(charset="utf-8")
-    meta(name="viewport", content="width=device-width, initial-scale=1")
-    title= title
+    meta(name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no")
+    title= t('app_title')
     link(rel="stylesheet" href=assets('assets/style.scss'))
-  body
-    block content
+  body.d-flex.flex-column.min-vh-100.bg-light
+    nav.navbar.navbar-expand-lg.navbar-light.bg-white
+      .container
+        a.navbar-brand(href=route('welcome'))= t('app_name')
+        button.navbar-toggler(data-bs-toggle='collapse' data-bs-target='#navbarToggleExternalContent')
+          span.navbar-toggler-icon
+        #navbarToggleExternalContent.collapse.navbar-collapse
+          ul.navbar-nav.justify-content-end.w-100
+            +navItem(route('users.index'), t('views.users.index.title'))(class="me-auto")
+            if isAuthenticated()
+              +navItem(route('statuses.index'), t('views.statuses.index.title'))
+              +navItem(route('labels.index'), t('views.labels.index.title'))
+              +navItem(route('tasks.index'), t('views.tasks.index.title'))
+              li.nav-item
+                +form(route('session.delete'), "delete")(class="mb-0")
+                  input.btn.nav-link(type="submit" value=t('actions.sign_out'))
+
+            else
+              +navItem(route('session.new'), t('actions.sign_in'))
+              +navItem(route('users.new'), t('actions.sign_up'))
+
+    .container.wrapper.flex-grow-1
+      +flash('error', 'danger')
+      +flash('info', 'info')
+      +flash('success', 'success')
+      h1.display-4.fw-bold.mt-4
+        block title
+      block content
+
+    footer.bg-dark.text-light
+      .container.py-3
+        p.lead.mb-0 © Hexlet Ltd, #{new Date().getFullYear()}
+
     script(type="module" src=assets('assets/main.js'))
 

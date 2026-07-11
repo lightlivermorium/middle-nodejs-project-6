@@ -1,0 +1,13 @@
+extends ../../layouts/page.pug
+include ../../mixins/forms
+
+block title
+  = t('views.users.edit.title')
+
+block content
+  +form(route('users.update', { id: user.id }), 'patch')
+    +floatingInput('firstName', t('users.fields.first_name'), 'text', user.firstName)
+    +floatingInput('lastName', t('users.fields.last_name'), 'text', user.lastName)
+    +floatingInput('email', t('users.fields.email'), 'email', user.email)
+    +floatingInput('password', t('users.fields.password'), 'password')
+    +submit(t('actions.edit'))

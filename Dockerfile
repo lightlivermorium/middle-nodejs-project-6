@@ -8,6 +8,8 @@ RUN npm ci
 
 COPY . .
 
+ENV NODE_ENV=production
+
 RUN npm run build
 
-CMD ["npm", "start"]
+CMD ["bash", "-c", "make db-migrate && npm start"]

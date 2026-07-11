@@ -1,6 +1,6 @@
 import fastifySecureSession from '@fastify/secure-session';
 import fp from 'fastify-plugin';
-import { env } from '../env/index.js';
+import { env, isProduction } from '../env/index.js';
 
 export default fp(
   async (fastify) => {
@@ -8,6 +8,9 @@ export default fp(
       key: env.SESSION_KEY,
       cookie: {
         path: '/',
+        httpOnly: true,
+        sameSite: 'lax',
+        secure: isProduction(),
       },
     });
   },

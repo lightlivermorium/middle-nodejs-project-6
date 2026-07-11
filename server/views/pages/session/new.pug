@@ -1,0 +1,18 @@
+extends ../../layouts/page.pug
+include ../../mixins/forms
+
+block title
+  = t('views.session.new.title')
+
+block content
+  .row.justify-content-center
+    .col-12.col-md-8
+      .card.shadow-sm
+        .card-body.row.p-5
+          .col-12.col-md-6.d-flex.align-items-center.justify-content-center
+            img.rounded-circle(src=assets('assets/avatar.jpg'))
+          .col-12.col-md-6.mt-3.mt-mb-0
+            +form(route('session.create', 'POST'))
+              +floatingInput('email', t('users.fields.email'), 'email', signInForm.email)
+              +floatingInput('password', t('users.fields.password'), 'password')
+              +submit(t('actions.sign_in'))

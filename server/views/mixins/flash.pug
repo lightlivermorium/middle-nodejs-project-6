@@ -1,0 +1,4 @@
+mixin flash(type, cssClass)
+  if flash && flash[type] && flash[type].length
+    each message in flash[type]
+      div.alert(class=`alert alert-${cssClass}`)= message

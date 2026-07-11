@@ -1,0 +1,34 @@
+mixin form(action, method = 'post')
+  - const normalizedMethod = method.toLowerCase()
+  - const isStandard = ['get', 'post'].includes(normalizedMethod)
+  - const formMethod = isStandard ? normalizedMethod : 'post'
+
+  form(action=action method=formMethod)&attributes(attributes)
+    if !isStandard
+      input(name="_method" type="hidden" value=normalizedMethod)
+
+    if block
+      block
+
+
+mixin floatingInput(name, labelText, type = 'text', value = '')
+  - const fieldId = `data_${name}`
+  - const hasError = has(errors || {}, [name, '0', 'message'])
+
+  .form-floating.mb-3
+    input(
+      id=fieldId
+      name=`data[${name}]`
+      value=value
+      placeholder=labelText
+      type=type
+      class=hasError ? 'form-control is-invalid' : 'form-control'
+    )&attributes(attributes)
+
+    if hasError
+      .form-control-feedback.invalid-feedback= get(errors || {}, [name, '0', 'message'])
+
+    label(for=fieldId)= labelText
+
+mixin submit(value, btnClass = 'btn-primary')
+  button.btn(type="submit" class=btnClass)&attributes(attributes)= value

@@ -1,19 +1,118 @@
+import path from 'node:path';
 import fp from 'fastify-plugin';
+import httpErrors from 'http-errors';
+import _ from 'lodash';
+import { match } from 'path-to-regexp';
+
+const { NotFound } = httpErrors;
+
+const getMethod = _.flow(_.get, _.toLower);
+
+const getHooks = (routeOptions, hookName) => {
+  const hook = _.get(routeOptions, hookName, []);
+  return _.isArray(hook) ? hook : [hook];
+};
+
+const hooksTable = ['preValidation', 'preHandler'];
+
+const getAllHooks = (routeOptions) =>
+  _.flatMap(hooksTable, (hookName) => getHooks(routeOptions, hookName));
 
 export default fp(
   async (fastify) => {
-    fastify.addHook('preHandler', async (request) => {
-      if (request.method !== 'POST') return;
-      const override = request.body?._method;
-      if (!override) return;
-      const method = String(override).toUpperCase();
-      if (!['PUT', 'PATCH', 'DELETE'].includes(method)) return;
-      request.raw.method = method;
-      request.method = method;
-      delete request.body._method;
+    const allowMethods = new Set(['head', 'put', 'delete', 'options', 'patch']);
+    const routeMatchers = {};
+
+    const handleRedirect = async (req, reply) => {
+      const url = _.get(req, 'raw.url');
+      const originalMethod = getMethod(req, 'raw.method');
+      const method = getMethod(req, 'body._method');
+
+      if (originalMethod === 'post' && allowMethods.has(method)) {
+        const route =
+          _.get(routeMatchers, method).find(({ check }) => check(url)) || {};
+        const { handler, check, hooks } = route;
+        const config = _.get(route, 'config', {});
+        const replyConfig = _.get(reply, 'context.config', {});
+
+        _.set(reply, 'context.config', {
+          ...config,
+          ...replyConfig,
+          method: _.toUpper(method),
+        });
+
+        if (!handler) {
+          const message = `Route ${_.toUpper(method)}:${url} not found`;
+          throw new NotFound(message);
+        }
+
+        const { params } = check(url);
+        const baseParams = _.has(params, 'unnamedParams')
+          ? { '*': params.unnamedParams.join(path.sep) }
+          : {};
+        _.set(req, 'params', {
+          ...baseParams,
+          ..._.omit(params, 'unnamedParams'),
+        });
+        _.set(req, 'raw.method', _.toUpper(method));
+
+        for (const hook of hooks) {
+          // eslint-disable-next-line
+          await new Promise((resolve, reject) => {
+            const maybePromise = hook(req, reply, (err) => {
+              if (err) {
+                reject(err);
+              } else {
+                resolve();
+              }
+            });
+            if (_.get(maybePromise, 'constructor.name') === 'Promise') {
+              maybePromise
+                .then(() => {
+                  resolve();
+                })
+                .catch((err) => {
+                  reject(err);
+                });
+            }
+          });
+          if (reply.sent) {
+            return;
+          }
+        }
+
+        await handler(req, reply);
+      }
+    };
+
+    fastify.addHook('onRoute', (routeOptions) => {
+      const { url, handler, config } = routeOptions;
+      const method = getMethod(routeOptions, 'method');
+
+      if (allowMethods.has(method)) {
+        const hooks = getAllHooks(routeOptions);
+        _.update(routeMatchers, _.toLower(method), (methodHandlers = []) =>
+          methodHandlers.concat({
+            check: match(url.replace(/\*.*/, ':unnamedParams*')),
+            handler,
+            hooks,
+            config,
+          }),
+        );
+      }
+
+      if (_.toLower(routeOptions.method) === 'post') {
+        const preHandlers = getHooks(routeOptions, 'preHandler');
+        _.set(routeOptions, 'preHandler', [handleRedirect, ...preHandlers]);
+      }
+    });
+
+    fastify.setNotFoundHandler({
+      preHandler: async (req, reply) => {
+        await handleRedirect(req, reply);
+      },
     });
   },
-
   {
     name: 'method-override',
   },

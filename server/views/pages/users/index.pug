@@ -1,0 +1,28 @@
+extends ../../layouts/page.pug
+
+block title
+  = t('views.users.index.title')
+
+block content
+  .table-responsive
+    table.table.table-borderless.table-striped.mt-5.bg-white
+      thead
+        tr
+          th= t('users.fields.id')
+          th= t('users.fields.full_name')
+          th= t('users.fields.email')
+          th= t('users.fields.created_at')
+          th= t('common.actions')
+      tbody
+        each user in users
+          tr
+            td= user.id
+            td #{user.firstName} #{user.lastName}
+            td= user.email
+            td= user.createdAt
+            td
+              .d-flex.flex-wrap
+                a.btn.btn-primary.me-1(href=route('users.edit', { id: user.id }))= t('actions.edit')
+                form(action=route('users.delete', { id: user.id }) method="post" class="mb-0")
+                  input(name="_method" type="hidden" value="delete")
+                  input.btn.btn-danger(type="submit" value=t('actions.delete'))

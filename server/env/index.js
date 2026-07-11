@@ -12,6 +12,11 @@ const envSchema = z.object({
   HOST: z.string().default('0.0.0.0'),
   PORT: z.coerce.number().positive().default(8000),
   SESSION_KEY: z.string(),
+  DATABASE_URL: z.string().optional(),
 });
 
 export const env = envSchema.parse(process.env);
+
+export const isDevelopment = () => env.NODE_ENV === 'development';
+export const isTest = () => env.NODE_ENV === 'test';
+export const isProduction = () => env.NODE_ENV === 'production';

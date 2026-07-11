@@ -1,11 +1,11 @@
 import { expect, test } from 'vitest';
 import { build } from '../helper.js';
 
-test('home', async () => {
+test('welcome', async () => {
   const app = await build();
 
   const res = await app.inject({
-    url: app.reverse('home'),
+    url: app.reverse('welcome'),
   });
 
   expect(res.statusCode).toBe(200);
