@@ -1,27 +1,27 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import { URL } from 'node:url';
+import fixtures from 'simple-knex-fixtures';
 import { createApp } from '../server/app.js';
 
-async function runMigrations(app) {
-  await app.objection.knex.migrate.latest();
-}
-
-async function runSeeders(app) {
-  await app.objection.knex.seed.run();
-}
-
-async function build({ migrate = true, seed = false } = {}) {
+export async function build() {
   const app = await createApp();
 
   await app.ready();
 
-  if (migrate) {
-    await runMigrations(app);
-  }
+  const { knex } = app.objection;
 
-  if (seed) {
-    await runSeeders(app);
-  }
+  await knex.migrate.latest();
+  await fixtures.loadFiles('__fixtures__/*.knex.json', knex);
 
   return app;
 }
 
-export { build, runMigrations, runSeeders };
+const getFixturePath = (filename) => path.join('..', '__fixtures__', filename);
+const readFixture = (filename) =>
+  fs
+    .readFileSync(new URL(getFixturePath(filename), import.meta.url), 'utf-8')
+    .trim();
+const getFixtureData = (filename) => JSON.parse(readFixture(filename));
+
+export const getTestData = () => getFixtureData('testData.json');

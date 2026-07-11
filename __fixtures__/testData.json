@@ -1,0 +1,16 @@
+{
+  "users": {
+    "new": {
+      "email": "malika_hodkiewicz75@live.com",
+      "password": "123",
+      "firstName": "Malika",
+      "lastName": "Hodkiewicz"
+    },
+    "existing": {
+      "email": "elbert_abshire52@gmail.com",
+      "password": "123",
+      "firstName": "Elbert",
+      "lastName": "Abshire"
+    }
+  }
+}

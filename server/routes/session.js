@@ -24,7 +24,7 @@ export default async function (fastify) {
         }
         await request.logIn(user);
         request.flash('success', t('session.create.success'));
-        return reply.redirect(fastify.reverse('welcome'));
+        reply.redirect(fastify.reverse('welcome'));
       }),
     )
     .delete('/session', { name: 'session.delete' }, (request, reply) => {

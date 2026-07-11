@@ -1,0 +1,25 @@
+[
+  {
+    "table": "users",
+    "data": [
+      {
+        "email": "elbert_abshire52@gmail.com",
+        "password_digest": "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3",
+        "first_name": "Elbert",
+        "last_name": "Abshire"
+      },
+      {
+        "email": "lawrence.kulas87@outlook.com",
+        "password_digest": "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3",
+        "first_name": "Lawrence",
+        "last_name": "Kulas"
+      },
+      {
+        "email": "nona_murray@yahoo.com",
+        "password_digest": "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3",
+        "first_name": "Nona",
+        "last_name": "Murray"
+      }
+    ]
+  }
+]

@@ -6,10 +6,7 @@ describe('test users CRUD', () => {
   let app;
 
   beforeAll(async () => {
-    app = await build({
-      migrate: true,
-      seed: true,
-    });
+    app = await build();
   });
 
   test('index', async () => {

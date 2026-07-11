@@ -60,6 +60,7 @@
     "@biomejs/biome": "2.5.2",
     "@faker-js/faker": "^10.5.0",
     "sass": "^1.101.0",
+    "simple-knex-fixtures": "^2.0.3",
     "vite": "^8.1.3",
     "vitest": "^4.1.10"
   }
