@@ -18,7 +18,7 @@
     "node": ">=24.0"
   },
   "scripts": {
-    "start": "node --env-file=.env server/bootstrap.js",
+    "start": "node server/bootstrap.js",
     "dev": "node --watch --env-file=.env server/bootstrap.js",
     "build": "vite build",
     "test": "vitest",
