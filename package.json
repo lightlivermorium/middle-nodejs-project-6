@@ -21,7 +21,8 @@
     "start": "node --env-file=.env server/bootstrap.js",
     "dev": "node --watch --env-file=.env server/bootstrap.js",
     "build": "vite build",
-    "test": "vitest"
+    "test": "vitest",
+    "migration": "knex"
   },
   "dependencies": {
     "@fastify/autoload": "^6.3.1",

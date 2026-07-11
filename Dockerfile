@@ -12,4 +12,4 @@ ENV NODE_ENV=production
 
 RUN npm run build
 
-CMD ["bash", "-c", "make db-migrate && npm start"]
+CMD ["bash", "-c", "npm run migration -- migrate:latest && npm start"]
