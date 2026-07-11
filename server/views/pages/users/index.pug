@@ -19,7 +19,7 @@ block content
             td= user.id
             td #{user.firstName} #{user.lastName}
             td= user.email
-            td= user.createdAt
+            td= formatDate(user.createdAt)
             td
               .d-flex.flex-wrap
                 a.btn.btn-primary.me-1(href=route('users.edit', { id: user.id }))= t('actions.edit')

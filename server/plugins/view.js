@@ -2,6 +2,7 @@ import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import view from '@fastify/view';
+import dayjs from 'dayjs';
 import fp from 'fastify-plugin';
 import i18next from 'i18next';
 import _ from 'lodash';
@@ -26,6 +27,7 @@ export default fp(
         t: (key, options) => i18next.t(key, options),
         has: _.has,
         get: _.get,
+        formatDate: (value) => dayjs(value).format('YYYY-MM-DD HH:mm'),
       },
     });
     fastify.decorateReply('render', function (template, args = {}) {
