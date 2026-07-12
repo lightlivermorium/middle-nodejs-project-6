@@ -1,11 +1,16 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { URL } from 'node:url';
+import fastify from 'fastify';
 import fixtures from 'simple-knex-fixtures';
-import { createApp } from '../server/app.js';
+import init from '../server/plugin.js';
 
 export async function build() {
-  const app = await createApp();
+  const app = fastify({
+    exposeHeadRoutes: false,
+    logger: { target: 'pino-pretty' },
+  });
+  await init(app);
 
   await app.ready();
 
