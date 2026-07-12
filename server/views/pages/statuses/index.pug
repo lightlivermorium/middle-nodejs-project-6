@@ -22,6 +22,5 @@ block content
             td
               .d-flex.flex-wrap
                 a.btn.btn-primary.me-1(href=route('statuses.edit', { id: status.id }))= t('actions.edit')
-                form(action=route('statuses.delete', { id: status.id }) method="post" class="mb-0")
-                  input(name="_method" type="hidden" value="delete")
-                  input.btn.btn-danger(type="submit" value=t('actions.delete'))
+                +form(route('statuses.delete', { id: status.id }), "delete")(class="mb-0")
+                  +submit(t('actions.delete'))(class="btn-danger")

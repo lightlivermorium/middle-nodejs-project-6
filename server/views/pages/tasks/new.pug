@@ -1,0 +1,25 @@
+extends ../../layouts/page.pug
+
+block title
+  = t('views.tasks.new.title')
+
+block content
+  +form(route('tasks.create'), 'post')
+    +floatingInput('name', t('tasks.fields.name'), 'text', task.name)
+    +textarea('description', t('tasks.fields.description'), task.description)
+    +select(
+      'statusId',
+      t('tasks.fields.status'),
+      statuses,
+      task.statusId,
+      {
+        map: ({ id, name }) => ({ value: id, label: name }),
+      })
+    +select(
+      'executorId',
+      t('tasks.fields.executor'),
+      users, task.executorId,
+      {
+        map: ({ id, firstName, lastName }) => ({ value: id, label: `${firstName} ${lastName}` }),
+      })
+    +submit(t('actions.create'))

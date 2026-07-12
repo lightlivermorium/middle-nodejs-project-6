@@ -1,0 +1,21 @@
+[
+  {
+    "table": "tasks",
+    "data": [
+      {
+        "name": "Write project tests",
+        "description": "Cover the core task routes",
+        "status_id": 1,
+        "creator_id": 1,
+        "executor_id": 2
+      },
+      {
+        "name": "Review task UI",
+        "description": "Check task pages and forms",
+        "status_id": 2,
+        "creator_id": 1,
+        "executor_id": null
+      }
+    ]
+  }
+]

@@ -39,7 +39,7 @@ export default {
       },
       manage: {
         forbidden:
-          'Вы не можете редактировать или удалять другого пользователя\n',
+          'Вы не можете редактировать или удалять другого пользователя',
       },
     },
     statuses: {
@@ -53,12 +53,37 @@ export default {
         success: 'Status successfully created',
       },
       update: {
-        error: 'Failed to update',
+        error: 'Failed to update status',
         success: 'Status updated successfully',
       },
       delete: {
         error: 'Failed to delete status',
         success: 'Status deleted successfully',
+        forbidden: 'You can not delete the status',
+      },
+    },
+    tasks: {
+      fields: {
+        id: 'ID',
+        name: 'Name',
+        description: 'Description',
+        status: 'Status',
+        creator: 'Creator',
+        executor: 'Executor',
+        created_at: 'Created at',
+      },
+      create: {
+        error: 'Failed to create task',
+        success: 'Task successfully created',
+      },
+      update: {
+        error: 'Failed to update task',
+        success: 'Task updated successfully',
+      },
+      delete: {
+        error: 'Failed to delete task',
+        success: 'Task deleted successfully',
+        forbidden: 'You can not delete the task',
       },
     },
     views: {
@@ -102,9 +127,13 @@ export default {
       tasks: {
         index: {
           title: 'Tasks',
+          new: 'Create task',
         },
         new: {
           title: 'New task',
+        },
+        edit: {
+          title: 'Edit task',
         },
       },
       session: {

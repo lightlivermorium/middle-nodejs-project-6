@@ -1,8 +1,8 @@
 import { afterAll, beforeAll, describe, expect, test } from 'vitest';
-import { buildStatus } from '../../server/lib/data/buildStatus.js';
+import { buildTask } from '../../server/lib/data/buildTask.js';
 import { build, logIn } from '../helper.js';
 
-describe('test statuses CRUD', () => {
+describe('test tasks CRUD', () => {
   let app;
   let cookie;
 
@@ -12,20 +12,21 @@ describe('test statuses CRUD', () => {
   });
 
   test('index', async () => {
-    const res = await app.inject({
+    const response = await app.inject({
       method: 'GET',
-      url: app.reverse('statuses.index'),
+      url: app.reverse('tasks.index'),
       headers: {
         cookie,
       },
     });
-    expect(res.statusCode).toBe(200);
+
+    expect(response.statusCode).toBe(200);
   });
 
   test('new', async () => {
     const response = await app.inject({
       method: 'GET',
-      url: app.reverse('statuses.new'),
+      url: app.reverse('tasks.new'),
       headers: {
         cookie,
       },
@@ -37,9 +38,9 @@ describe('test statuses CRUD', () => {
   test('create', async () => {
     const response = await app.inject({
       method: 'POST',
-      url: app.reverse('statuses.create'),
+      url: app.reverse('tasks.create'),
       body: {
-        data: buildStatus(),
+        data: buildTask(),
       },
       headers: {
         cookie,
@@ -49,10 +50,34 @@ describe('test statuses CRUD', () => {
     expect(response.statusCode).toBe(302);
   });
 
+  test('show not existed', async () => {
+    const response = await app.inject({
+      method: 'GET',
+      url: app.reverse('tasks.show', { id: 404 }),
+      headers: {
+        cookie,
+      },
+    });
+
+    expect(response.statusCode).toBe(404);
+  });
+
+  test('show existed', async () => {
+    const response = await app.inject({
+      method: 'GET',
+      url: app.reverse('tasks.show', { id: 1 }),
+      headers: {
+        cookie,
+      },
+    });
+
+    expect(response.statusCode).toBe(200);
+  });
+
   test('edit not existed', async () => {
     const response = await app.inject({
       method: 'GET',
-      url: app.reverse('statuses.edit', { id: 404 }),
+      url: app.reverse('tasks.edit', { id: 404 }),
       headers: {
         cookie,
       },
@@ -64,7 +89,7 @@ describe('test statuses CRUD', () => {
   test('edit existed', async () => {
     const response = await app.inject({
       method: 'GET',
-      url: app.reverse('statuses.edit', { id: 1 }),
+      url: app.reverse('tasks.edit', { id: 1 }),
       headers: {
         cookie,
       },
@@ -76,9 +101,9 @@ describe('test statuses CRUD', () => {
   test('update', async () => {
     const response = await app.inject({
       method: 'PATCH',
-      url: app.reverse('statuses.update', { id: 1 }),
+      url: app.reverse('tasks.update', { id: 1 }),
       body: {
-        data: buildStatus(),
+        data: buildTask(),
       },
       headers: {
         cookie,
@@ -91,7 +116,7 @@ describe('test statuses CRUD', () => {
   test('delete not existed', async () => {
     const response = await app.inject({
       method: 'DELETE',
-      url: app.reverse('statuses.update', { id: 404 }),
+      url: app.reverse('tasks.delete', { id: 404 }),
       headers: {
         cookie,
       },
@@ -103,7 +128,7 @@ describe('test statuses CRUD', () => {
   test('delete existed', async () => {
     const response = await app.inject({
       method: 'DELETE',
-      url: app.reverse('statuses.update', { id: 1 }),
+      url: app.reverse('tasks.delete', { id: 1 }),
       headers: {
         cookie,
       },

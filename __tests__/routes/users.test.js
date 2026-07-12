@@ -1,5 +1,5 @@
 import { afterAll, beforeAll, describe, expect, test } from 'vitest';
-import { buildUser } from '../../server/seeds/helpers/buildUser.js';
+import { buildUser } from '../../server/lib/data/buildUser.js';
 import { build } from '../helper.js';
 
 describe('test users CRUD', () => {

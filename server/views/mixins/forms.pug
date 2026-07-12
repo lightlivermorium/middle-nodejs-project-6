@@ -30,5 +30,43 @@ mixin floatingInput(name, labelText, type = 'text', value = '')
 
     label(for=fieldId)= labelText
 
+mixin textarea(name, labelText, value = '')
+  - const fieldId = `data_${name}`
+  - const hasError = has(errors || {}, [name, '0', 'message'])
+
+  .mb-3
+    label(for=fieldId)= labelText
+    textarea(
+      id=fieldId
+      name=`data[${name}]`
+      class=hasError ? 'form-control is-invalid' : 'form-control'
+    )&attributes(attributes)= value
+
+    if hasError
+      .form-control-feedback.invalid-feedback= get(errors || {}, [name, '0', 'message'])
+
+mixin select(name, labelText, options = [], value = null, config)
+  - const fieldId = `data_${name}`
+  - const hasError = has(errors || {}, [name, '0', 'message'])
+  - const isMultiple = Boolean(config.multiple)
+  - const values = isMultiple ? (Array.isArray(value) ? value : [value]) : [value]
+  - const selectedValues = values.filter((item) => item !== null && item !== undefined).map(String)
+
+  .mb-3
+    label.form-label(for=fieldId)= labelText
+    select(
+      id=fieldId
+      name=isMultiple ? `data[${name}][]` : `data[${name}]`
+      class=hasError ? 'form-control is-invalid' : 'form-control'
+      multiple=isMultiple
+    )&attributes(attributes)
+      if !isMultiple
+        option(value="")
+      each optionItem in options.map(config.map)
+        option(value=optionItem.value selected=selectedValues.includes(String(optionItem.value)))= optionItem.label
+
+    if hasError
+      .form-control-feedback.invalid-feedback= get(errors || {}, [name, '0', 'message'])
+
 mixin submit(value, btnClass = 'btn-primary')
   button.btn(type="submit" class=btnClass)&attributes(attributes)= value

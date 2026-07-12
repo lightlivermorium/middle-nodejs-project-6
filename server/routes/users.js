@@ -20,10 +20,10 @@ export default async function (fastify) {
       user.$set(request.body.data);
 
       try {
-        const validUser = await fastify.objection.models.user.fromJson(
+        const validated = await fastify.objection.models.user.fromJson(
           request.body.data,
         );
-        await fastify.objection.models.user.query().insert(validUser);
+        await fastify.objection.models.user.query().insert(validated);
         request.flash('info', t('users.create.success'));
         return reply.redirect(fastify.reverse('welcome'));
       } catch ({ data }) {
@@ -84,10 +84,16 @@ export default async function (fastify) {
       async (request, reply) => {
         try {
           const id = Number(request.params.id);
-          if (id !== request.user.id) {
+          const hasAssignedTasks = await fastify.objection.models.task
+            .query()
+            .where('executorId', id)
+            .resultSize();
+
+          if (id !== request.user.id || hasAssignedTasks) {
             request.flash('error', t('users.manage.forbidden'));
             return reply.redirect(fastify.reverse('users.index'));
           }
+
           await fastify.objection.models.user.query().deleteById(id);
           request.logOut();
           request.flash('info', t('users.delete.success'));

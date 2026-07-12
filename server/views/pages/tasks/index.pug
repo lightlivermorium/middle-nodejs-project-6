@@ -4,3 +4,52 @@ block title
   = t('views.tasks.index.title')
 
 block content
+  a.btn.btn-primary(href=route('tasks.new'))= t('views.tasks.index.new')
+
+  .card.shadow-sm.my-4
+    .card-body.p-4
+      form(action="/tasks", method="get")
+        .row
+          .col-12.col-md
+            .input-group.mb-3
+              label.input-group-text(for="data_status") Статус
+              select#data_status.form-select(name="status" disabled)
+          .col-12.col-md
+            .input-group.mb-3
+              label.input-group-text(for="data_executor") Исполнитель
+              select#data_executor.form-select(name="executor" disabled)
+          .col-12.col-md
+            .input-group.mb-3
+              label.input-group-text(for="data_label") Метка
+              select#data_label.form-select(name="label" disabled)
+        .mb-3.form-check
+          input#data_isCreatorUser.form-check-input(type="checkbox", name="isCreatorUser" disabled)
+          label.form-check-label(for="data_isCreatorUser") Только мои задачи
+        input.btn.btn-primary(type="submit", value="Показать" disabled)
+
+  .table-responsive
+    table.table.table-borderless.table-striped.mt-5.bg-white
+      thead
+        tr
+          th= t('tasks.fields.id')
+          th= t('tasks.fields.name')
+          th= t('tasks.fields.status')
+          th= t('tasks.fields.creator')
+          th= t('tasks.fields.executor')
+          th= t('tasks.fields.created_at')
+          th= t('common.actions')
+      tbody
+        each task in tasks
+          tr
+            td= task.id
+            td
+              a(href=route('tasks.show', { id: task.id }))= task.name
+            td= task.status.name
+            td= task.creator.fullName
+            td= task.executor ? task.executor.fullName : ''
+            td= formatDate(task.createdAt)
+            td
+              .d-flex.flex-wrap
+                a.btn.btn-primary.me-1(href=route('tasks.edit', { id: task.id }))= t('actions.edit')
+                +form(route('tasks.delete', {id: task.id}), "delete")(class="mb-0")
+                  +submit(t('actions.delete'))(class="btn-danger")

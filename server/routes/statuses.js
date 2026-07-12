@@ -28,10 +28,10 @@ export default async function (fastify) {
       status.$set(request.body.data);
 
       try {
-        const validStatus = await fastify.objection.models.status.fromJson(
+        const validated = await fastify.objection.models.status.fromJson(
           request.body.data,
         );
-        await fastify.objection.models.status.query().insert(validStatus);
+        await fastify.objection.models.status.query().insert(validated);
         request.flash('info', t('statuses.create.success'));
         return reply.redirect(fastify.reverse('statuses.index'));
       } catch ({ data }) {
@@ -47,6 +47,7 @@ export default async function (fastify) {
           .query()
           .findById(request.params.id)
           .throwIfNotFound();
+
         return reply.render('pages/statuses/edit', { status, errors: {} });
       },
     )
@@ -83,11 +84,22 @@ export default async function (fastify) {
       '/statuses/:id',
       { name: 'statuses.delete', preValidation: fastify.authenticate },
       async (request, reply) => {
-        await fastify.objection.models.status
+        const status = await fastify.objection.models.status
           .query()
-          .deleteById(request.params.id)
+          .findById(request.params.id)
           .throwIfNotFound();
 
+        const hasTaskWithTheStatus = await fastify.objection.models.task
+          .query()
+          .where('status_id', status.id)
+          .resultSize();
+
+        if (hasTaskWithTheStatus) {
+          request.flash('error', t('statuses.delete.forbidden'));
+          return reply.redirect(fastify.reverse('statuses.index'));
+        }
+
+        await status.$query().delete();
         request.flash('info', t('statuses.delete.success'));
         reply.redirect(fastify.reverse('statuses.index'));
       },

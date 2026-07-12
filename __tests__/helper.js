@@ -12,7 +12,14 @@ export async function build() {
   const { knex } = app.objection;
 
   await knex.migrate.latest();
-  await fixtures.loadFiles('__fixtures__/*.knex.json', knex);
+  await fixtures.loadFiles(
+    [
+      '__fixtures__/users.knex.json',
+      '__fixtures__/statuses.knex.json',
+      '__fixtures__/tasks.knex.json',
+    ],
+    knex,
+  );
 
   return app;
 }
