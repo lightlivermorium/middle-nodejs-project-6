@@ -22,4 +22,13 @@ block content
       {
         map: ({ id, firstName, lastName }) => ({ value: id, label: `${firstName} ${lastName}` }),
       })
+    +select(
+      'labels',
+      t('tasks.fields.labels'),
+      labels,
+      task.labels,
+      {
+        multiple: true,
+        map: ({ id, name }) => ({ value: id, label: name }),
+      })
     +submit(t('actions.edit'))

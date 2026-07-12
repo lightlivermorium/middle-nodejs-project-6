@@ -4,3 +4,23 @@ block title
   = t('views.labels.index.title')
 
 block content
+  a.btn.btn-primary(href=route('labels.new'))= t('views.labels.index.new')
+  .table-responsive
+    table.table.table-borderless.table-striped.mt-5.bg-white
+      thead
+        tr
+          th= t('labels.fields.id')
+          th= t('labels.fields.name')
+          th= t('labels.fields.created_at')
+          th= t('common.actions')
+      tbody
+        each label in labels
+          tr
+            td= label.id
+            td= label.name
+            td= formatDate(label.createdAt)
+            td
+              .d-flex.flex-wrap
+                a.btn.btn-primary.me-1(href=route('labels.edit', { id: label.id }))= t('actions.edit')
+                +form(route('labels.delete', { id: label.id }), "delete")(class="mb-0")
+                  +submit(t('actions.delete'))(class="btn-danger")

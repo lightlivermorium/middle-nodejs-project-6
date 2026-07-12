@@ -1,5 +1,6 @@
 import { Model, snakeCaseMappers } from 'objection';
 import BaseModel from './BaseModel.js';
+import Label from './Label.js';
 import Status from './Status.js';
 import User from './User.js';
 
@@ -65,6 +66,18 @@ class Task extends BaseModel {
         join: {
           from: 'tasks.executor_id',
           to: 'users.id',
+        },
+      },
+      labels: {
+        relation: Model.ManyToManyRelation,
+        modelClass: Label,
+        join: {
+          from: 'tasks.id',
+          through: {
+            from: 'task_labels.task_id',
+            to: 'task_labels.label_id',
+          },
+          to: 'labels.id',
         },
       },
     };

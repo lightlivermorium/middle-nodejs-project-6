@@ -16,7 +16,9 @@ export async function build() {
     [
       '__fixtures__/users.knex.json',
       '__fixtures__/statuses.knex.json',
+      '__fixtures__/labels.knex.json',
       '__fixtures__/tasks.knex.json',
+      '__fixtures__/task_labels.knex.json',
     ],
     knex,
   );

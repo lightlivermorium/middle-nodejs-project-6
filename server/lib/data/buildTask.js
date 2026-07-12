@@ -6,6 +6,7 @@ export function buildTask(overrides = {}) {
     description: faker.lorem.sentence(),
     statusId: 1,
     executorId: 2,
+    labels: [1, 2],
     ...overrides,
   };
 }

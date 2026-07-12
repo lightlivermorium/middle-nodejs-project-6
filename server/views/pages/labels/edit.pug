@@ -1,0 +1,9 @@
+extends ../../layouts/page.pug
+
+block title
+  = t('views.labels.edit.title')
+
+block content
+  +form(route('labels.update', { id: label.id }), 'patch')
+    +floatingInput('name', t('labels.fields.name'), 'text', label.name)
+    +submit(t('actions.edit'))

@@ -1,0 +1,16 @@
+[
+  {
+    "table": "labels",
+    "data": [
+      {
+        "name": "Bug"
+      },
+      {
+        "name": "Feature"
+      },
+      {
+        "name": "Documentation"
+      }
+    ]
+  }
+]

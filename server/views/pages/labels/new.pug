@@ -1,0 +1,9 @@
+extends ../../layouts/page.pug
+
+block title
+  = t('views.labels.new.title')
+
+block content
+  +form(route('labels.create'), 'post')
+    +floatingInput('name', t('labels.fields.name'), 'text', label.name)
+    +submit(t('actions.create'))

@@ -62,12 +62,33 @@ export default {
         forbidden: 'You can not delete the status',
       },
     },
+    labels: {
+      fields: {
+        id: 'ID',
+        name: 'Name',
+        created_at: 'Created at',
+      },
+      create: {
+        error: 'Failed to create label',
+        success: 'Label successfully created',
+      },
+      update: {
+        error: 'Failed to update label',
+        success: 'Label updated successfully',
+      },
+      delete: {
+        error: 'Failed to delete label',
+        success: 'Label deleted successfully',
+        forbidden: 'You can not delete the label',
+      },
+    },
     tasks: {
       fields: {
         id: 'ID',
         name: 'Name',
         description: 'Description',
         status: 'Status',
+        labels: 'Labels',
         creator: 'Creator',
         executor: 'Executor',
         created_at: 'Created at',
@@ -119,9 +140,13 @@ export default {
       labels: {
         index: {
           title: 'Labels',
+          new: 'Create label',
         },
         new: {
           title: 'New label',
+        },
+        edit: {
+          title: 'Edit label',
         },
       },
       tasks: {

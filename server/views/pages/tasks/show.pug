@@ -10,13 +10,15 @@ block content
       .col-12.col-md-4.border-start.px-3.order-1.order-md-2.mb-3.mb-md-0
         .mb-2
           span.me-1.badge.bg-danger.text-white= task.status.name
+          each label in task.labels
+            span.me-1.badge.bg-info.text-white= label.name
         .d-flex.flex-wrap.mb-3
           span.text-muted.me-2= t('tasks.fields.creator')
           span= task.creator.fullName
         if task.executor
             .d-flex.flex-wrap.mb-3
               span.text-muted.me-2= t('tasks.fields.executor')
-                span= task.executor.fullName
+              span= task.executor.fullName
         .d-flex.flex-wrap.mb-3
           span.text-muted.me-2= t('tasks.fields.created_at')
           span= formatDate(task.createdAt)
@@ -24,4 +26,3 @@ block content
           a.btn.btn-primary.me-1(href=route('tasks.edit', { id: task.id }))= t('actions.edit')
           +form(route('tasks.delete', { id: task.id }), "delete")(class="mb-0")
             +submit(t('actions.delete'))(class="btn-danger")
-
