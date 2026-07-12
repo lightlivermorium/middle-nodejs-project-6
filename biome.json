@@ -27,8 +27,5 @@
       "quoteStyle": "single",
       "semicolons": "always"
     }
-  },
-  "organizeImports": {
-    "enabled": true
   }
 }
