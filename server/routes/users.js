@@ -56,7 +56,7 @@ export default async function (fastify) {
             .findById(id)
             .throwIfNotFound();
 
-          const { password, ...rest } = request.body;
+          const { password, ...rest } = request.body.data;
 
           if (password) {
             rest.password = password;
