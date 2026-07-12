@@ -13,6 +13,8 @@ const envSchema = z.object({
   PORT: z.coerce.number().positive().default(8000),
   SESSION_KEY: z.string(),
   DATABASE_URL: z.string().optional(),
+  ROLLBAR_ACCESS_TOKEN: z.string().optional(),
+  ROLLBAR_ENVIRONMENT: z.string().optional(),
 });
 
 export const env = envSchema.parse(process.env);
