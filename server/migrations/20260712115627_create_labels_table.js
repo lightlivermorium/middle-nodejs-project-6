@@ -30,7 +30,8 @@ export const up = (knex) =>
 
 /**
  * @param { import("knex").Knex } knex
- * @returns { Promise<void> }
+ * @returns {Knex.SchemaBuilder}
  */
-export const down = (knex) =>
-  knex.schema.dropTable('task_labels').dropTable('labels');
+export const down = (knex) => {
+  return knex.schema.dropTable('task_labels').dropTable('labels');
+};

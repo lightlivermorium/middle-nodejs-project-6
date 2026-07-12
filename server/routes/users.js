@@ -86,7 +86,7 @@ export default async function (fastify) {
           const id = Number(request.params.id);
           const hasAssignedTasks = await fastify.objection.models.task
             .query()
-            .where('executorId', id)
+            .where('executor_id', id)
             .resultSize();
 
           if (id !== request.user.id || hasAssignedTasks) {

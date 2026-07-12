@@ -15,8 +15,8 @@ export const up = (knex) =>
 
 /**
  * @param { import("knex").Knex } knex
- * @returns { Promise<void> }
+ * @returns {Knex.SchemaBuilder}
  */
 export const down = (knex) => {
-  knex.schema.dropTable('users');
+  return knex.schema.dropTable('users');
 };
