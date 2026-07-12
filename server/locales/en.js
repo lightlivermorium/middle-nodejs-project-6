@@ -89,6 +89,7 @@ export default {
         description: 'Description',
         status: 'Status',
         labels: 'Labels',
+        label: 'Label',
         creator: 'Creator',
         executor: 'Executor',
         created_at: 'Created at',
@@ -153,6 +154,12 @@ export default {
         index: {
           title: 'Tasks',
           new: 'Create task',
+          filters: {
+            status: 'Status',
+            executor: 'Executor',
+            label: 'Label',
+            is_creator_user: 'Show only mine',
+          },
         },
         new: {
           title: 'New task',
@@ -173,6 +180,7 @@ export default {
       sign_out: 'Sign out',
       create: 'Create',
       save: 'Save',
+      show: 'Show',
       edit: 'Edit',
       delete: 'Delete',
     },

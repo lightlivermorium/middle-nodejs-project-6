@@ -1,4 +1,5 @@
 import { t } from 'i18next';
+import _ from 'lodash';
 
 const normalizeLabels = (labels) =>
   (Array.isArray(labels) ? labels : [labels])
@@ -24,8 +25,13 @@ export default async function (fastify) {
     .get(
       '/tasks',
       { name: 'tasks.index', preValidation: fastify.authenticate },
-      async (_request, reply) => {
-        const tasks = await fastify.objection.models.task
+      async (request, reply) => {
+        const status = _.get(request, 'query.status', '');
+        const executor = _.get(request, 'query.executor', '');
+        const label = _.get(request, 'query.label', '');
+        const isCreatorUser = Boolean(_.get(request, 'query.isCreatorUser', 0));
+
+        const tasksQuery = fastify.objection.models.task
           .query()
           .withGraphFetched('[status, creator, executor, labels]')
           .modifyGraph('status', (builder) => {
@@ -40,8 +46,48 @@ export default async function (fastify) {
           .modifyGraph('labels', (builder) => {
             builder.select('id', 'name');
           });
+
+        if (status) {
+          tasksQuery.where('status_id', status);
+        }
+
+        if (executor) {
+          tasksQuery.where('executor_id', executor);
+        }
+
+        if (label) {
+          tasksQuery.whereExists(
+            fastify.objection
+              .knex('task_labels')
+              .select(1)
+              .whereRaw('task_labels.task_id = tasks.id')
+              .where('task_labels.label_id', label),
+          );
+        }
+
+        if (isCreatorUser) {
+          tasksQuery.where('creator_id', request.user.id);
+        }
+
+        const tasks = await tasksQuery;
+
+        const [statuses, users, labels] = await Promise.all([
+          fastify.objection.models.status.query(),
+          fastify.objection.models.user.query(),
+          fastify.objection.models.label.query(),
+        ]);
+
         return reply.render('pages/tasks/index.pug', {
           tasks,
+
+          statuses,
+          users,
+          labels,
+
+          status,
+          executor,
+          label,
+          isCreatorUser,
         });
       },
     )

@@ -23,6 +23,71 @@ describe('test tasks CRUD', () => {
     expect(response.statusCode).toBe(200);
   });
 
+  test('filter by status', async () => {
+    const response = await app.inject({
+      method: 'GET',
+      url: `${app.reverse('tasks.index')}?status=2`,
+      headers: {
+        cookie,
+      },
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toContain('Review task UI');
+    expect(response.body).not.toContain('Write project tests');
+  });
+
+  test('filter by executor', async () => {
+    const response = await app.inject({
+      method: 'GET',
+      url: `${app.reverse('tasks.index')}?executor=2`,
+      headers: {
+        cookie,
+      },
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toContain('Write project tests');
+    expect(response.body).not.toContain('Review task UI');
+  });
+
+  test('filter by label', async () => {
+    const response = await app.inject({
+      method: 'GET',
+      url: `${app.reverse('tasks.index')}?label=3`,
+      headers: {
+        cookie,
+      },
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toContain('Review task UI');
+    expect(response.body).not.toContain('Write project tests');
+  });
+
+  test('filter by creator', async () => {
+    await app.objection.models.task.query().insert({
+      name: 'Other creator task',
+      description: 'Task created by another user',
+      statusId: 1,
+      creatorId: 2,
+      executorId: 1,
+    });
+
+    const response = await app.inject({
+      method: 'GET',
+      url: `${app.reverse('tasks.index')}?isCreatorUser=1`,
+      headers: {
+        cookie,
+      },
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toContain('Write project tests');
+    expect(response.body).toContain('Review task UI');
+    expect(response.body).not.toContain('Other creator task');
+  });
+
   test('new', async () => {
     const response = await app.inject({
       method: 'GET',

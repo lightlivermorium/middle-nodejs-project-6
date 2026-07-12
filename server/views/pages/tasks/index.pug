@@ -8,24 +8,39 @@ block content
 
   .card.shadow-sm.my-4
     .card-body.p-4
-      form(action="/tasks", method="get")
+      +form(route('tasks.index'), 'GET')
         .row
           .col-12.col-md
-            .input-group.mb-3
-              label.input-group-text(for="data_status") Статус
-              select#data_status.form-select(name="status" disabled)
+            +selectGroup(
+              t('views.tasks.index.filters.status'),
+              'status',
+              statuses.map(({ id, name }) => ({ value: id, label: name })),
+              status
+            )
           .col-12.col-md
-            .input-group.mb-3
-              label.input-group-text(for="data_executor") Исполнитель
-              select#data_executor.form-select(name="executor" disabled)
+            +selectGroup(
+              t('views.tasks.index.filters.executor'),
+              'executor',
+              users.map(({ id, fullName }) => ({ value: id, label: fullName })),
+              executor
+            )
           .col-12.col-md
-            .input-group.mb-3
-              label.input-group-text(for="data_label") Метка
-              select#data_label.form-select(name="label" disabled)
+            +selectGroup(
+              t('views.tasks.index.filters.label'),
+              'label',
+              labels.map(({ id, name }) => ({ value: id, label: name })),
+              label
+            )
         .mb-3.form-check
-          input#data_isCreatorUser.form-check-input(type="checkbox", name="isCreatorUser" disabled)
-          label.form-check-label(for="data_isCreatorUser") Только мои задачи
-        input.btn.btn-primary(type="submit", value="Показать" disabled)
+          input#data_isCreatorUser.form-check-input(
+            type="checkbox"
+            name="isCreatorUser"
+            value="1"
+            checked=isCreatorUser
+          )
+
+          label.form-check-label(for="data_isCreatorUser")= t('views.tasks.index.filters.is_creator_user')
+        +submit(t('actions.show'))
 
   .table-responsive
     table.table.table-borderless.table-striped.mt-5.bg-white

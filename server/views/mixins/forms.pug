@@ -70,3 +70,12 @@ mixin select(name, labelText, options = [], value = null, config)
 
 mixin submit(value, btnClass = 'btn-primary')
   button.btn(type="submit" class=btnClass)&attributes(attributes)= value
+
+mixin selectGroup(label, name, options = [], selectedValue = '')
+  - const elementId = `data_${name}`
+  .input-group.mb-3
+    label.input-group-text(for=elementId)= label
+    select.form-select(id=elementId, name=name)
+      option
+      each opt in options
+        option(value=opt.value, selected=(opt.value == selectedValue))= opt.label
