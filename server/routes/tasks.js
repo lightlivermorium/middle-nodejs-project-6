@@ -259,7 +259,7 @@ export default async function (fastify) {
           .throwIfNotFound();
 
         if (task.creatorId !== request.user.id) {
-          request.flash('error', t('tasks.delete.forbidden'));
+          request.flash('error', t('tasks.delete.error'));
           return reply.redirect(fastify.reverse('tasks.index'));
         }
 

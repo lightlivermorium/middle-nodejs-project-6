@@ -95,7 +95,7 @@ export default async function (fastify) {
           .resultSize();
 
         if (hasTaskWithTheStatus) {
-          request.flash('error', t('statuses.delete.forbidden'));
+          request.flash('error', t('statuses.delete.error'));
           return reply.redirect(fastify.reverse('statuses.index'));
         }
 

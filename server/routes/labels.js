@@ -104,7 +104,7 @@ export default async function (fastify) {
           .first();
 
         if (hasTaskWithTheLabel) {
-          request.flash('error', t('labels.delete.forbidden'));
+          request.flash('error', t('labels.delete.error'));
           return reply.redirect(fastify.reverse('labels.index'));
         }
 
