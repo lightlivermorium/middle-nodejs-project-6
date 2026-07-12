@@ -56,14 +56,15 @@ export default async function (fastify) {
             .findById(id)
             .throwIfNotFound();
 
-          if (!request.body.data.password) {
-            delete request.body.data.password;
+          const { password, ...rest } = request.body;
+
+          if (password) {
+            rest.password = password;
           }
 
-          const validated = await fastify.objection.models.user.fromJson(
-            request.body.data,
-            { patch: true },
-          );
+          const validated = await fastify.objection.models.user.fromJson(rest, {
+            patch: true,
+          });
 
           await user.$query().patch(validated);
           request.flash('info', t('users.update.success'));
@@ -97,7 +98,7 @@ export default async function (fastify) {
           await fastify.objection.models.user.query().deleteById(id);
           request.logOut();
           request.flash('info', t('users.delete.success'));
-        } catch (error) {
+        } catch (_error) {
           request.flash('error', t('users.delete.error'));
         } finally {
           reply.redirect(fastify.reverse('users.index'));

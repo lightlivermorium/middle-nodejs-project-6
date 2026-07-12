@@ -16,7 +16,7 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "preset": "recommended",
+      "recommended": true,
       "complexity": {
         "noStaticOnlyClass": "off"
       }
@@ -28,12 +28,7 @@
       "semicolons": "always"
     }
   },
-  "assist": {
-    "enabled": true,
-    "actions": {
-      "source": {
-        "organizeImports": "on"
-      }
-    }
+  "organizeImports": {
+    "enabled": true
   }
 }

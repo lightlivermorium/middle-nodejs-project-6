@@ -13,7 +13,7 @@ async function fastifyRollbar(fastify) {
 
   fastify.decorate('rollbar', rollbar);
 
-  fastify.addHook('onError', async (request, reply, error) => {
+  fastify.addHook('onError', async (request, _reply, error) => {
     fastify.rollbar.error(error, request.raw);
   });
 }
