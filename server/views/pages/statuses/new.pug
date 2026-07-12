@@ -1,0 +1,9 @@
+extends ../../layouts/page.pug
+
+block title
+  = t('views.statuses.new.title')
+
+block content
+  +form(route('statuses.create'), 'post')
+    +floatingInput('name', t('statuses.fields.name'), 'text', status.name)
+    +submit(t('actions.create'))

@@ -1,0 +1,19 @@
+[
+  {
+    "table": "statuses",
+    "data": [
+      {
+        "name": "Backlog"
+      },
+      {
+        "name": "Todo"
+      },
+      {
+        "name": "In Progress"
+      },
+      {
+        "name": "Done"
+      }
+    ]
+  }
+]

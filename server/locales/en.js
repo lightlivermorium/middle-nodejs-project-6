@@ -42,6 +42,25 @@ export default {
           'Вы не можете редактировать или удалять другого пользователя\n',
       },
     },
+    statuses: {
+      fields: {
+        id: 'ID',
+        name: 'Name',
+        created_at: 'Created at',
+      },
+      create: {
+        error: 'Failed to create status',
+        success: 'Status successfully created',
+      },
+      update: {
+        error: 'Failed to update',
+        success: 'Status updated successfully',
+      },
+      delete: {
+        error: 'Failed to delete status',
+        success: 'Status deleted successfully',
+      },
+    },
     views: {
       welcome: {
         title: 'Organize Your Work',
@@ -63,9 +82,13 @@ export default {
       statuses: {
         index: {
           title: 'Statuses',
+          new: 'Create status',
         },
         new: {
-          title: 'New status',
+          title: 'Status creation',
+        },
+        edit: {
+          title: 'Edit status',
         },
       },
       labels: {
@@ -94,6 +117,7 @@ export default {
       sign_in: 'Sign in',
       sign_up: 'Sign up',
       sign_out: 'Sign out',
+      create: 'Create',
       save: 'Save',
       edit: 'Edit',
       delete: 'Delete',

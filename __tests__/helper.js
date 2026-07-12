@@ -17,6 +17,31 @@ export async function build() {
   return app;
 }
 
+function extractCookieHeader(response) {
+  const cookies = response.headers['set-cookie'];
+
+  if (Array.isArray(cookies)) {
+    return cookies.map((cookie) => cookie.split(';')[0]).join('; ');
+  }
+
+  return cookies?.split(';')[0] ?? '';
+}
+
+export async function logIn(app, user = getTestData().users.existing) {
+  const response = await app.inject({
+    method: 'POST',
+    url: app.reverse('session.create'),
+    payload: {
+      data: {
+        email: user.email,
+        password: user.password,
+      },
+    },
+  });
+
+  return extractCookieHeader(response);
+}
+
 const getFixturePath = (filename) => path.join('..', '__fixtures__', filename);
 const readFixture = (filename) =>
   fs
