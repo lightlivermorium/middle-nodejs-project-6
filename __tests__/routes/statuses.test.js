@@ -1,5 +1,5 @@
 import { afterAll, beforeAll, describe, expect, test } from 'vitest';
-import { buildStatus } from '../../server/lib/data/buildStatus.js';
+import { buildStatus } from '../data/buildStatus.js';
 import { build, logIn } from '../helper.js';
 
 describe('test statuses CRUD', () => {

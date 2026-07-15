@@ -1,5 +1,5 @@
 import { afterAll, beforeAll, describe, expect, test } from 'vitest';
-import { buildLabel } from '../../server/lib/data/buildLabel.js';
+import { buildLabel } from '../data/buildLabel.js';
 import { build, logIn } from '../helper.js';
 
 describe('test labels CRUD', () => {

@@ -1,5 +1,5 @@
 import { afterAll, beforeAll, describe, expect, test } from 'vitest';
-import { buildTask } from '../../server/lib/data/buildTask.js';
+import { buildTask } from '..//data/buildTask.js';
 import { build, logIn } from '../helper.js';
 
 describe('test tasks CRUD', () => {

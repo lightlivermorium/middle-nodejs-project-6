@@ -25,8 +25,7 @@ export const up = (knex) =>
       .nullable()
       .references('id')
       .inTable('users');
-    table.timestamp('created_at').defaultTo(knex.fn.now());
-    table.timestamp('updated_at').defaultTo(knex.fn.now());
+    table.timestamps(true, true);
   });
 
 /**

@@ -23,7 +23,7 @@ export default async function (fastify) {
         });
       },
     )
-    .post('/statuses', { name: 'statuses.create' }, async (request, reply) => {
+    .post('/statuses', { name: 'statuses.create', preValidation: fastify.authenticate }, async (request, reply) => {
       const status = new fastify.objection.models.status();
       status.$set(request.body.data);
 

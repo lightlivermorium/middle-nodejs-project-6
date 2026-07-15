@@ -1,6 +1,7 @@
-import { snakeCaseMappers } from 'objection';
+import { Model, snakeCaseMappers } from 'objection';
 import objectionUnique from 'objection-unique';
 import BaseModel from './BaseModel.js';
+import Task from './Task.js';
 
 const unique = objectionUnique({ fields: ['name'] });
 
@@ -20,6 +21,19 @@ class Status extends unique(BaseModel) {
       properties: {
         id: { type: 'integer' },
         name: { type: 'string', minLength: 1 },
+      },
+    };
+  }
+
+  static get relationMappings() {
+    return {
+      tasks: {
+        relation: Model.HasManyRelation,
+        modelClass: Task,
+        join: {
+          from: 'statuses.id',
+          to: 'tasks.status_id',
+        },
       },
     };
   }
